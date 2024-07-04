@@ -25,6 +25,44 @@
 ### Comment contribuer
 Installation spécifique pour le développement (inclus dans le pyproject.toml) : test avec [`pytest`](https://docs.pytest.org/en/stable/contents.html) et [`coverage`](https://coverage.readthedocs.io/en/latest/), documentation avec [`sphinx`](https://www.sphinx-doc.org/en/master/), sécurité avec [`bandit`](https://bandit.readthedocs.io/en/latest/)
 
+
+#### Initialisation de l'environnement avec poetry
+Prérequis : installation de `poetry`, voir la documentation officielle [ici](https://python-poetry.org/docs/#installation) si besoin.
+
+:warning: **L'installation de poetry doit être réalisée dans un environnement virtuel isolé**
+
+Pour installer les dépendances du projet (équivalent de pip requirements-dev.txt avec pip) :
+```
+poetry install
+```
+
+Pour ajouter un package dans poetry :
+```
+poetry add nom-du-package
+```
+
+Pour éxécuter le code :
+```
+poetry run python app.py
+```
+
+Les tests :
+```
+poetry run coverage run -m pytest
+poetry run coverage html
+```
+
+La documentation :
+```
+poetry run make html
+```
+
+#### Installation des scripts pre-commit
+Pour que `pre-commit` se lance automatiquement à chaque commit, il faut au préalable installer les scripts git-hook
+```
+poetry run pre-commit install
+```
+
 Avant chaque commit :
 * Vérifier que vos modifications n'ont pas ajouté de regression dans le code, en éxécutant à minima les tests et en ajoutant de nouveaux tests si nécessaire.
 * Documenter systématiquement les fonctions et classes avec les docstrings afin de générer automatiquement la documentation avec sphinx. Générer la documentation pour vérifier qu'il n'y a pas d'erreur.
@@ -47,17 +85,17 @@ Pour chaque fonctionnalité :
 3. Développement dans la branche `nom_fonctionalite`
 4. Réaliser les tests pour vérifier le bon fonctionnement de la nouvelle fonctionalité et la non régression du code existant
 ```
-coverage run -m pytest
-coverage html
+poetry run coverage run -m pytest
+poetry run coverage html
 ```
 5. Générer la nouvelle documentation
 ```
 cd docs/build
-make html
+poetry run make html
 ```
 6. Vérifier que le code n'a pas de faille de sécurité
 ```
-bandit -r src
+poetry run bandit -r src
 ```
 7. [Merge request](https://github.com/olmatz/python-project-template/pulls) de la branche `nom_fonctionalite` vers la branche `dev`
 8. Résolution de l'issue
